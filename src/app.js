@@ -35,16 +35,7 @@ function createTerminal(){
     createInput();
     createParagraph("Hello i m George");
     createParagraph("This is my portfolio website");
-    createParagraph("Hello i m George");
-    createParagraph("This is my portfolio website");
-    createParagraph("Hello i m George");
-    createParagraph("This is my portfolio website");
-    createParagraph("Hello i m George");
-    createParagraph("This is my portfolio website");
-    createParagraph("Hello i m George");
-    createParagraph("This is my portfolio website");
-    createParagraph("Hello i m George");
- 
+
 
 
 }

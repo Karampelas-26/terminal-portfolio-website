@@ -66,6 +66,7 @@ body{
     margin: 0 auto;
     color: #025806;
     font-size: 2vh;
+    font-weight: 600;
 
 }
 
@@ -83,7 +84,7 @@ body{
     color: #fff;
     padding: 0;
     margin: 8px;
-    font-size: 20px;
+    font-size: 1em;
 }
 
 
@@ -96,5 +97,7 @@ body{
     background: transparent;
     border: none;
     outline: none;
-
+    margin: 0px 8px;
+    font-family: 'Inconsolata', monospace;
+    font-size: 1em;
 }
