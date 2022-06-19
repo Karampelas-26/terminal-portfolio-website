@@ -101,3 +101,14 @@ body{
     font-family: 'Inconsolata', monospace;
     font-size: 1em;
 }
+
+.user{
+    margin: 0;
+    padding: 0;
+    color: rgb(93, 242, 93)
+}
+
+.user-input{
+    display: flex;
+    flex-direction: row;
+}
