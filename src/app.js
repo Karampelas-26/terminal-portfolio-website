@@ -1,5 +1,7 @@
 const app = document.querySelector("#app");
 const terminal = document.querySelector(".terminal-wrapper");
+// const regex_color = new RegExp('/^color\s[0-9a-fA-F]{1}[0-9a-fA-F]{1}[0-9a-fA-F]{1}$/g');
+const regex_color = new RegExp('^color [0-9a-fA-F]{3}');
 
 let paragraphs = [];
 
@@ -7,11 +9,11 @@ let commands = [];
 
 let iterator = 1;
 
-const colors = {
-    text: "#fff",
-    green: "#5df25d"
+let colors = {
+    primary: "#fff",
+    secondary: "#5df25d",
+    background: "#222222"
 }
-
 
 app.addEventListener('keypress', function (e) {
     if (e.key == 'Enter'){
@@ -92,9 +94,11 @@ function createCommandText(text){
     const span_user = document.createElement("span"); 
     span_user.innerHTML = `user@User:~$ `;
     span_user.setAttribute("class", "user text")
+    span_user.style.color = colors.secondary;
     const span_command = document.createElement("span");
     span_command.innerHTML = text; 
     span_command.setAttribute("class", "text");
+    span_command.style.color = colors.primary;
     const p = document.createElement("p");
     p.setAttribute("class", "text")
     removeInput();
@@ -114,9 +118,11 @@ function createInput(){
     const input = document.createElement("input");
     input.setAttribute("class", "text input")
     input.setAttribute("id", "only-input");
+    input.style.color = colors.primary;
     const span = document.createElement("span");
     span.innerHTML = `user@User:~$ `;
     span.setAttribute("class", "user");
+    span.style.color = colors.secondary;
     const p = document.createElement("p")
     p.setAttribute("class", "text")
     p.setAttribute("id", "input-paragraph")
@@ -133,7 +139,7 @@ function createTerminal(){
         isClosed = false;
     }
     createInput();
-    createParagraph("Hi, I'm George!<br>Welcome on my terminal portfolio, type 'help' to view available commands.", colors.text);
+    createParagraph("Hi, I'm George!<br>Welcome on my terminal portfolio, type 'help' to view available commands.", colors.primary);
 }
 
 function destroyTerminal(){
@@ -152,7 +158,7 @@ function destroyTerminal(){
 
 async function help(){
     time = 70;
-    createParagraph("You can also navigate on previous commands with up and down arrows.", colors.text);
+    createParagraph("You can also navigate on previous commands with up and down arrows.", colors.primary);
     await sleep(time);
     createHelpLine("about -----------", false, "Show information about me.");
     await sleep(time);
@@ -183,6 +189,8 @@ async function help(){
     createHelpLine("instagram ----", true, "Follow me on instagram.");
     await sleep(time);
     createHelpLine("phone --------", true, "Or fell free to call me.");
+    await sleep(time);
+    createHelpLine("color ----------", false, "Option to change color, you can change the background color, the primary color and the secondary color. All the availble colors ara below with the code that you have to enter to change the color.<br>0 = black &nbsp&nbsp&nbsp&nbsp 8 = gray <br>1 = white &nbsp&nbsp&nbsp&nbsp 9 = turquoise<br>2 = green &nbsp&nbsp&nbsp&nbsp A = light yellow<br>3 = yellow &nbsp&nbsp&nbsp B = ligth orange<br>4 = blue &nbsp&nbsp&nbsp&nbsp&nbsp C = ligth red<br>5 = red &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp D = screamin green<br>6 = purple &nbsp&nbsp&nbsp E = violet<br>7 = orange &nbsp&nbsp&nbsp F = pink<br>To choose color type the command color and following the code of colors. The first letter of the code is for background, second letter is for primary color and the last letter is for secondary color. For example 'color 08D'.");
     await sleep(time);
     createHelpLine("help -----------", false, "For help menu.");
     await sleep(time);
@@ -216,6 +224,9 @@ function createHelpLine(option, skill_opt, text){
     const span_c = document.createElement("span");
     span_c.setAttribute("class", "text help-c");
     span_c.innerHTML = text;
+
+    div.style.color = colors.primary;
+
     div.appendChild(span_c);
 
     removeInput();
@@ -225,7 +236,7 @@ function createHelpLine(option, skill_opt, text){
 }
 
 function wrongInput(false_input){
-    createParagraph("'"+false_input+"' is not valid command, please enter a valid command or type 'help' to view all commands.", colors.text)
+    createParagraph("'"+false_input+"' is not valid command, please enter a valid command or type 'help' to view all commands.", colors.primary)
 }
 
 function upCommand(){
@@ -250,7 +261,6 @@ function downCommand(){
 }
 
 function cleanTerminal(){
-    createCommandText("cls");
     app.textContent = '';
     createInput();
 }
@@ -262,11 +272,13 @@ function generateHistory(){
     });
     createInput();
     iterator = paragraphs.length;
+    changeColor(colors.background, colors.primary, colors.secondary);
+
 }
 
 async function aboutMe(){
-    createParagraph("About me:", colors.green);
-    createParagraph("My name is George Karampelas and I am 22 years old. I am studying Computer Science on Athens University of Economicsand Business. In my free time i like to swim or going for a walk late at noon. I also like gaming but due to my low-end laptop i usually creating efficient programs so my laptop doesn't creash or run out of RAM :)");
+    createParagraph("About me:", colors.secondary);
+    createParagraph("My name is George Karampelas and I am 22 years old. I am studying Computer Science on Athens University of Economicsand Business. In my free time i like to swim or going for a walk late at noon. I also like gaming but due to my low-end laptop i usually creating efficient programs so my laptop doesn't creash or run out of RAM :)", colors.primary);
 }
 
 async function mySkills(){
@@ -277,7 +289,7 @@ async function mySkills(){
 
 async function programmingLanguages(){
     
-    createParagraph("Programming Languages:", colors.green);
+    createParagraph("Programming Languages:", colors.secondary);
     await createTextWithPercentageBar("Java", 100)
     await createTextWithPercentageBar("Javascript", 60)
     await createTextWithPercentageBar("Python", 55)
@@ -314,7 +326,8 @@ async function createTextWithPercentageBar(text_a, percentage){
     div.appendChild(span_a);
     div.appendChild(span_b);
     div.setAttribute("class", "space-evenly");
-    
+    div.style.color = colors.primary;
+
     removeInput();
     app.appendChild(div);
     paragraphs.push(div);
@@ -336,12 +349,13 @@ async function createTextWithPercentageBar(text_a, percentage){
 }
 
 function database(){
-    createParagraph("Databases:", colors.green);
+    createParagraph("Databases:", colors.secondary);
     const pre = document.createElement("pre");
     pre.setAttribute("class", "text db-pre");
-    createParagraph("These are the database that I have experience. There are both Relational and NoSQL.<br>Personaly I prefer Relational databases and depending to the project I could easily<br>learn how to woek with a database that I have never worked with.");
+    createParagraph("These are the database that I have experience. There are both Relational and NoSQL.<br>Personaly I prefer Relational databases and depending to the project I could easily<br>learn how to woek with a database that I have never worked with.", colors.primary);
     pre.innerHTML = 
     "+-------+-------------------------+----------------------+\n|id     | name                    | type                 |\n+-------+-------------------------+----------------------+\n|1      | Microsoft SQL Server    | Relational           |\n|2      | PostgreSQL              | Relational           |\n|3      | MongoDB                 | NoSQL                |\n+-------+-------------------------+----------------------+";
+    pre.style.color = colors.primary;
     removeInput();
     app.appendChild(pre);
     paragraphs.push(pre);
@@ -350,8 +364,8 @@ function database(){
 
 function tools(){
 
-    createParagraph("Tools:", colors.green);
-    createParagraph("Tools that I am using everyday and tools that I am familiar with tehm!", colors.text);
+    createParagraph("Tools:", colors.secondary);
+    createParagraph("Tools that I am using everyday and tools that I am familiar with them!", colors.primary);
     createParagraph(`
     .tools<br>
     |__.communication<br>
@@ -377,16 +391,12 @@ function tools(){
     |__.uml<br>
     &nbsp&nbsp |__umlet<br>
     &nbsp&nbsp |__diagrams.net
-    `)
-
-    // const div = document.createElement("div");
-    // createSecondLevelTreeNode(div, 2, ".communication");
-
+    `, colors.primary);
 }
 
 async function contactWithMe(){
-    createParagraph("Contact with me:", colors.green);
-    createParagraph("You can find me here just with a click, or typing, like 'contact -email', where you want to find me and redirect you...")
+    createParagraph("Contact with me:", colors.secondary);
+    createParagraph("You can find me here just with a click, or typing, like 'contact -email', where you want to find me and redirect you...", colors.primary);
 
     const div = document.createElement("div");
     div.setAttribute("class", "links-wrapper");
@@ -409,8 +419,83 @@ async function createAnchor(parent, link, text){
     anchor.href= link;
     anchor.innerHTML = text;
     anchor.setAttribute("class", "link");
+    anchor.style.color = colors.primary;
     await sleep(100);
     parent.appendChild(anchor)
+}
+
+function colorPicker(char){
+
+    let c;
+    switch (char){
+        case "0" : 
+            c = "#222222";
+            break;
+        case "1" : 
+            c = "#FFFFFF";
+            break;
+        case "2" : 
+            c = "#00FF00";
+            break;
+        case "3" : 
+            c = "#FFFF5B";
+            break;
+        case "4" : 
+            c = "#0007E8";
+            break;
+        case "5" : 
+            c = "#FF2424";
+            break;
+        case "6" : 
+            c = "#760EC0";
+            break;
+        case "7" : 
+            c = "#FF8912";
+            break;
+        case "8" : 
+            c = "#bfc0c0";
+            break;
+        case "9" : 
+            c = "#72E1D1";
+            break;
+        case "A" : 
+            c = "#FCF45D";
+            break;
+        case "B" : 
+            c = "#ff9e00";
+            break;
+        case "C" : 
+            c = "#ef233c";
+            break;
+        case "D" : 
+            c = "#5DF25D";
+            break;
+        case "E" : 
+            c = "#6f2dbd";
+            break;
+        case "F" : 
+            c = "#ff0a54";
+            break;
+        default:
+            break;
+    }
+    return c;
+}
+
+function changeColor(background, primary, secondary){
+
+    let bElements = document.querySelector(".terminal-wrapper");
+    bElements.style.backgroundColor = background;
+
+    const textElement = document.querySelectorAll(".text, .links");
+    textElement.forEach(element => {
+        element.style.color = primary;
+    });
+
+    const secElement = document.querySelectorAll(".user");
+    secElement.forEach(element => {
+        element.style.color = secondary;
+    });
 }
 
 function checkInput(input){
@@ -471,7 +556,22 @@ function checkInput(input){
             cleanTerminal();
             break;
         default: 
-            wrongInput(input);
+
+            if(regex_color.exec(input))
+            {
+                let background = input.charAt(6).toUpperCase();
+                let primary = input.charAt(7).toUpperCase();
+                let secondary = input.charAt(8).toUpperCase();
+
+                colors.background = colorPicker(background);
+                colors.primary = colorPicker(primary);
+                colors.secondary = colorPicker(secondary);
+
+                changeColor(colors.background, colors.primary, colors.secondary);
+            }
+            else{
+                wrongInput(input);
+            }
     }
 
     commands.push(input);
