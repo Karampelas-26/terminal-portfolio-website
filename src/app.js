@@ -1,8 +1,9 @@
 const app = document.querySelector("#app");
+const terminal = document.querySelector(".terminal-wrapper");
 
-const paragraphs = [];
+let paragraphs = [];
 
-const commands = [];
+let commands = [];
 
 let iterator = 1;
 
@@ -28,6 +29,50 @@ app.addEventListener('keydown', function (e){
     //down key coode
     if(e.keyCode == 40){
         downCommand();
+    }
+})
+
+const close = document.querySelector('#red');
+let isClosed = false;
+const full = document.querySelector('#yellow');
+let isFull = false;
+const min = document.querySelector("#green");
+let shown = true;
+const taskbar = document.querySelector(".taskbar");
+const active = document.querySelector(".active");
+
+close.addEventListener("click", function(){
+    destroyTerminal();
+})
+
+taskbar.addEventListener("click", function(){
+    if(isClosed){
+        createTerminal();
+    }
+
+    if(shown){
+        terminal.style.display = 'block';
+        shown = true;
+    }
+})
+
+min.addEventListener("click", function(){
+    if(shown){
+        terminal.style.display = 'none';
+        isMin = false;
+    }
+})
+
+full.addEventListener("click", function(){
+    if(isFull){
+        terminal.style.width = "60%";
+        terminal.style.height = "60%";
+        isFull = false;
+    }
+    else{
+        terminal.style.width = "100%";
+        terminal.style.height = "100%";
+        isFull = true;
     }
 })
 
@@ -82,9 +127,27 @@ function createInput(){
 }
 
 function createTerminal(){
+    if(isClosed){
+        terminal.style.display = "block";
+        active.style.display = "block";
+        isClosed = false;
+    }
     createInput();
     createParagraph("Hi, I'm George!<br>Welcome on my terminal portfolio, type 'help' to view available commands.", colors.text);
-    help();
+}
+
+function destroyTerminal(){
+    isClosed = true;
+    terminal.style.display ="none";
+    active.style.display ="none";
+    paragraphs = [];
+    commands = [];
+    app.textContent ='';
+    isFull = false;
+    shown = true;
+    terminal.style.width = "60%";
+    terminal.style.height = "60%";
+
 }
 
 async function help(){
@@ -104,8 +167,6 @@ async function help(){
     createHelpLine("t ------------", true, "Tools that I use every day or I am familiar with them.");
     await sleep(time);
     createHelpLine("vcs ----------", true, "Tools for Version Control System that I know.");
-    await sleep(time);
-    createHelpLine("m ------------", true, "Some more of my knowledge.");
     await sleep(time);
     createHelpLine("contact --------", false, "Find me and conctact with me.");
     await sleep(time);
@@ -127,7 +188,7 @@ async function help(){
     await sleep(time);
     createHelpLine("command_history", false, "To view all command history.");
     await sleep(time);
-    createHelpLine("cls ------------", false, "View my skills on programming.");
+    createHelpLine("clear ------------", false, "To clear the terminal.");
 }
 
 function createHelpLine(option, skill_opt, text){
@@ -159,6 +220,7 @@ function createHelpLine(option, skill_opt, text){
 
     removeInput();
     app.appendChild(div);
+    paragraphs.push(div);
     createInput();
 }
 
@@ -208,16 +270,14 @@ async function aboutMe(){
 }
 
 async function mySkills(){
-    createParagraph("Programming Languages:", colors.green);
     await programmingLanguages();
-    createParagraph("Databases:", colors.green);
     database();
-    createParagraph("Tools:", colors.green);
-    createParagraph("More:", colors.green);
+    tools();
 }
 
 async function programmingLanguages(){
-
+    
+    createParagraph("Programming Languages:", colors.green);
     await createTextWithPercentageBar("Java", 100)
     await createTextWithPercentageBar("Javascript", 60)
     await createTextWithPercentageBar("Python", 55)
@@ -227,7 +287,7 @@ async function programmingLanguages(){
     await createTextWithPercentageBar("NodeJS & Express", 40)
     await createTextWithPercentageBar("C#", 20)
     await createTextWithPercentageBar("C", 30)
-
+    
 }
 
 String.prototype.replaceAtIndex = function(_index, _newValue) {
@@ -240,23 +300,24 @@ function sleep(ms) {
 }
 
 async function createTextWithPercentageBar(text_a, percentage){
-
+    
     const div = document.createElement("div");
-
+    
     const span_a = document.createElement("span");
     span_a.innerHTML = text_a;
     span_a.setAttribute("class", "text part-a");
-
+    
     const span_b = document.createElement("span");
     
     span_b.setAttribute("class", "text part-b");
-
+    
     div.appendChild(span_a);
     div.appendChild(span_b);
     div.setAttribute("class", "space-evenly");
-
+    
     removeInput();
     app.appendChild(div);
+    paragraphs.push(div);
     createInput();
 
 
@@ -265,9 +326,8 @@ async function createTextWithPercentageBar(text_a, percentage){
     let progress_bar_out = `[..................................................] ${perc}%`;
     span_b.innerHTML = progress_bar_out;
     for(let i = 0; i < 100; i++){
-        // progress_bar += percentage/2 > i ? "#" : ".";
         if(percentage > i && i%2 === 1) {
-            await sleep(10);
+            await sleep(3);
             progress_bar = progress_bar.replaceAtIndex((i+1)/2, "#");
             progress_bar_out = progress_bar + ` ${i+1}%`;
         }
@@ -276,6 +336,7 @@ async function createTextWithPercentageBar(text_a, percentage){
 }
 
 function database(){
+    createParagraph("Databases:", colors.green);
     const pre = document.createElement("pre");
     pre.setAttribute("class", "text db-pre");
     createParagraph("These are the database that I have experience. There are both Relational and NoSQL.<br>Personaly I prefer Relational databases and depending to the project I could easily<br>learn how to woek with a database that I have never worked with.");
@@ -283,16 +344,54 @@ function database(){
     "+-------+-------------------------+----------------------+\n|id     | name                    | type                 |\n+-------+-------------------------+----------------------+\n|1      | Microsoft SQL Server    | Relational           |\n|2      | PostgreSQL              | Relational           |\n|3      | MongoDB                 | NoSQL                |\n+-------+-------------------------+----------------------+";
     removeInput();
     app.appendChild(pre);
+    paragraphs.push(pre);
     createInput();
 }
 
+function tools(){
+
+    createParagraph("Tools:", colors.green);
+    createParagraph("Tools that I am using everyday and tools that I am familiar with tehm!", colors.text);
+    createParagraph(`
+    .tools<br>
+    |__.communication<br>
+    |&nbsp |__slack<br>
+    |&nbsp |__discord<br>
+    |&nbsp |__microsoft_teams<br>
+    |__.ide<br>
+    |&nbsp |__intellij<br>
+    |&nbsp |__visual_studio_code<br>
+    |&nbsp |__visual_studio<br>
+    |&nbsp |__android_studio<br>
+    |&nbsp |__unity<br>
+    |&nbsp |__pycharm<br>
+    |__.developer_tools<br>
+    |&nbsp |__pgAdmin<br>
+    |&nbsp |__microsoft_SQL_server_management_studio<br>
+    |&nbsp |__postman<br>
+    |__.source_control<br>
+    |&nbsp |__git<br>
+    |&nbsp |__github<br>
+    |&nbsp |__gitlab<br>
+    |&nbsp |__bitbucket<br>
+    |__.uml<br>
+    &nbsp&nbsp |__umlet<br>
+    &nbsp&nbsp |__diagrams.net
+    `)
+
+    // const div = document.createElement("div");
+    // createSecondLevelTreeNode(div, 2, ".communication");
+
+}
+
 async function contactWithMe(){
-    createParagraph("Contact with me", colors.green);
+    createParagraph("Contact with me:", colors.green);
     createParagraph("You can find me here just with a click, or typing, like 'contact -email', where you want to find me and redirect you...")
 
     const div = document.createElement("div");
-    div.setAttribute("class", "links-wraper");
+    div.setAttribute("class", "links-wrapper");
     removeInput();
+    paragraphs.push(div);
     app.appendChild(div);
 
     await createAnchor(div, "mailto:george.karampelas.26@gmail.com", "email");
@@ -310,8 +409,8 @@ async function createAnchor(parent, link, text){
     anchor.href= link;
     anchor.innerHTML = text;
     anchor.setAttribute("class", "link");
-    parent.appendChild(anchor)
     await sleep(100);
+    parent.appendChild(anchor)
 }
 
 function checkInput(input){
@@ -333,15 +432,15 @@ function checkInput(input){
             database();
             break;
         case "skills -t":
-            mySkills();
+            tools();
             break;
         case "skills -vcs":
             mySkills();
             break;
-        case "skills -m":
-            mySkills();
-            break;
         case "contact":
+            contactWithMe();
+            break;
+        case "contact -all":
             contactWithMe();
             break;
         case "contact -email":
@@ -368,7 +467,7 @@ function checkInput(input){
         case "command_history":
             generateHistory();
             break;
-        case "cls":
+        case "clear":
             cleanTerminal();
             break;
         default: 

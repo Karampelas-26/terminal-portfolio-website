@@ -3,29 +3,37 @@
 <head>
     <title>Terminal Portofolio</title>
     <link rel="stylesheet" href="src/index.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 </head>
 
 <body>
     
     <div class="outer-wrapper">
-
         <div class="terminal-wrapper">
             <div class="terminal-header">
                 <div class="header-buttons">
-                    <div class="btn red"></div>
-                    <div class="btn yellow"></div>
-                    <div class="btn green"></div>
+                    <div class="btn" id="red"></div>
+                    <div class="btn" id="yellow"></div>
+                    <div class="btn" id="green"></div>
                 </div>
+                <div class="text-header-wrapper">
                     <div class="btn text-header">
                         George Karampelas Terminal Portofolio
                     </div>
                 </div>
+            </div>
             <div class="terminal-text">
                 <div id="app">
-                    <!-- <a href="https://www.github.com/Karampelas-26">github</a> -->
                 </div>
             </div>
         </div>
+    </div>
+
+    <div class="taskbar">
+        <div class="icon"><span class="material-symbols-outlined">
+            chevron_right
+            </span></div>
+        <div class="active"></div>
     </div>
 
     <script src="src/app.js"></script>
