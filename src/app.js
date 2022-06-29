@@ -290,12 +290,12 @@ async function mySkills(){
 async function programmingLanguages(){
     
     createParagraph("Programming Languages:", colors.secondary);
-    await createTextWithPercentageBar("Java", 100)
-    await createTextWithPercentageBar("Javascript", 60)
-    await createTextWithPercentageBar("Python", 55)
-    await createTextWithPercentageBar("HTML5", 85)
-    await createTextWithPercentageBar("CSS3", 65)
-    await createTextWithPercentageBar("C++", 40)
+    await createTextWithPercentageBar("Java", 80)
+    await createTextWithPercentageBar("Javascript", 50)
+    await createTextWithPercentageBar("Python", 45)
+    await createTextWithPercentageBar("HTML5", 75)
+    await createTextWithPercentageBar("CSS3", 55)
+    await createTextWithPercentageBar("C++", 35)
     await createTextWithPercentageBar("NodeJS & Express", 40)
     await createTextWithPercentageBar("C#", 20)
     await createTextWithPercentageBar("C", 30)
